@@ -3,12 +3,10 @@ package com.example.soundenchancement
 import android.content.Context
 import android.content.Intent
 import androidx.test.core.app.ApplicationProvider
-import androidx.test.rule.ServiceTestRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import junit.framework.TestCase.assertEquals
-import junit.framework.TestCase.assertNotNull
-import junit.framework.TestCase.assertTrue
+import androidx.test.rule.ServiceTestRule
 import org.junit.*
+import org.junit.Assert.*
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
@@ -19,11 +17,13 @@ class AudioBoostServiceTest {
 
     @Before
     fun setup() {
+        // Inject the fake factory before starting the service
         AudioBoostService.effectFactory = FakeAudioEffectFactory()
     }
 
     @After
     fun tearDown() {
+        // Restore default factory after test
         AudioBoostService.effectFactory = AudioEffectFactory()
     }
 
@@ -36,16 +36,19 @@ class AudioBoostServiceTest {
         val binder = serviceRule.bindService(intent)
         val service = (binder as AudioBoostService.LocalBinder).getService()
 
+        // Service itself is created
         assertNotNull(service)
 
+        // BassBoost
         val bassBoost = service.getBassBoost()
         assertNotNull(bassBoost)
         assertTrue(bassBoost?.roundedStrength?.toInt() ?: 0 > 0)
         assertTrue(bassBoost?.enabled ?: false)
 
-        val loudnessEnhancer = service.getLoudnessEnhancer()
-        assertNotNull(loudnessEnhancer)
-        assertEquals(1000, loudnessEnhancer?.targetGain)
-        assertTrue(loudnessEnhancer?.enabled ?: false)
+        // LoudnessEnhancer
+        val loudness = service.getLoudnessEnhancer()
+        assertNotNull(loudness)
+        assertEquals(1000, loudness?.targetGain)
+        assertTrue(loudness?.enabled ?: false)
     }
 }
