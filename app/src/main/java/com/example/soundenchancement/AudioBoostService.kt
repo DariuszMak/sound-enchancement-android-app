@@ -3,7 +3,7 @@ package com.example.soundenchancement
 import android.app.*
 import android.content.Intent
 import android.content.pm.ServiceInfo
-import android.media.MediaPlayer
+import android.media.*
 import android.os.Build
 import android.os.IBinder
 import android.util.Log
@@ -18,7 +18,7 @@ class AudioBoostService : Service() {
 
     private val binder = LocalBinder()
 
-    private var mediaPlayer: MediaPlayer? = null
+    private var audioTrack: AudioTrack? = null
     private var bassBoost: IBassBoost? = null
     private var loudnessEnhancer: ILoudnessEnhancer? = null
 
@@ -31,23 +31,38 @@ class AudioBoostService : Service() {
     override fun onCreate() {
         super.onCreate()
         startForegroundService()
-        initMediaPlayer()
+        initAudioSession()
         enableEffects()
         Log.d("AudioBoostService", "Service created")
     }
 
-    private fun initMediaPlayer() {
-        mediaPlayer = MediaPlayer().apply {
-            setVolume(0f, 0f) // silent player
-            setOnPreparedListener { start() }
-            setDataSource("") // empty source (won't actually play)
-            prepareAsync()
-        }
+    private fun initAudioSession() {
+        val sampleRate = 44100
+        val bufferSize = AudioTrack.getMinBufferSize(
+            sampleRate,
+            AudioFormat.CHANNEL_OUT_MONO,
+            AudioFormat.ENCODING_PCM_16BIT
+        )
+
+        audioTrack = AudioTrack(
+            AudioAttributes.Builder()
+                .setUsage(AudioAttributes.USAGE_MEDIA)
+                .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                .build(),
+            AudioFormat.Builder()
+                .setEncoding(AudioFormat.ENCODING_PCM_16BIT)
+                .setSampleRate(sampleRate)
+                .setChannelMask(AudioFormat.CHANNEL_OUT_MONO)
+                .build(),
+            bufferSize,
+            AudioTrack.MODE_STREAM,
+            AudioManager.AUDIO_SESSION_ID_GENERATE
+        )
     }
 
     private fun enableEffects() {
         try {
-            val sessionId = mediaPlayer?.audioSessionId ?: return
+            val sessionId = audioTrack?.audioSessionId ?: return
 
             bassBoost = bassBoostFactory(sessionId)
             loudnessEnhancer = loudnessFactory(sessionId)
@@ -63,11 +78,11 @@ class AudioBoostService : Service() {
     override fun onDestroy() {
         bassBoost?.release()
         loudnessEnhancer?.release()
-        mediaPlayer?.release()
+        audioTrack?.release()
 
         bassBoost = null
         loudnessEnhancer = null
-        mediaPlayer = null
+        audioTrack = null
 
         super.onDestroy()
     }
