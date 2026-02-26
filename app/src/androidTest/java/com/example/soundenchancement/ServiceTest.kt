@@ -45,7 +45,7 @@ class AudioBoostServiceTest {
         val bassBoost = bassBoostField.get(service) as IBassBoost?
 
         assertNotNull(bassBoost)
-        assertEquals(1000, bassBoost?.strength)
+        assertEquals(1000.toShort(), bassBoost?.strength)
         assertTrue(bassBoost?.enabled ?: false)
     }
 }
