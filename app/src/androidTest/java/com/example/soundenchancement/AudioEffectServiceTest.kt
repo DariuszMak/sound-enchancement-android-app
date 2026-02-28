@@ -2,6 +2,7 @@ package com.example.soundenchancement
 
 import android.content.Context
 import android.content.Intent
+import android.media.audiofx.Equalizer
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.rule.ServiceTestRule
@@ -15,19 +16,8 @@ class AudioEffectServiceTest {
     @get:Rule
     val serviceRule = ServiceTestRule()
 
-    @Before
-    fun setup() {
-        AudioEffectService.bassBoostFactory = { FakeBassBoost() }
-    }
-
-    @After
-    fun tearDown() {
-        AudioEffectService.bassBoostFactory = { RealBassBoost() }
-    }
-
     @Test
-    fun serviceStartsAndEnablesBassBoost() {
-
+    fun serviceStartsAndAppliesEqualizer() {
         val context = ApplicationProvider.getApplicationContext<Context>()
         val intent = Intent(context, AudioEffectService::class.java)
 
@@ -36,14 +26,29 @@ class AudioEffectServiceTest {
 
         assertNotNull(service)
 
-        val bassBoostField =
-            AudioEffectService::class.java.getDeclaredField("bassBoost")
-        bassBoostField.isAccessible = true
+        val equalizerField =
+            AudioEffectService::class.java.getDeclaredField("equalizer")
+        equalizerField.isAccessible = true
 
-        val bassBoost = bassBoostField.get(service) as IBassBoost?
+        val eq = equalizerField.get(service) as Equalizer?
+        assertNotNull(eq)
+        assertTrue(eq?.enabled == true)
 
-        assertNotNull(bassBoost)
-        assertEquals(1000.toShort(), bassBoost?.strength)
-        assertTrue(bassBoost?.enabled ?: false)
+        val numberOfBands = eq!!.numberOfBands
+        val (minLevel, maxLevel) = eq.bandLevelRange
+
+        // Check that all bands are within min/max
+        for (i in 0 until numberOfBands) {
+            val bandLevel = eq.getBandLevel(i.toShort())
+            assertTrue(
+                "Band $i level $bandLevel out of range",
+                bandLevel in minLevel..maxLevel
+            )
+        }
+
+        // Optional: check first band (deep bass) is higher than mid bands
+        val firstBand = eq.getBandLevel(0)
+        val midBand = eq.getBandLevel((numberOfBands / 2).toShort())
+        assertTrue("Bass band should be stronger than mid band", firstBand > midBand)
     }
 }
