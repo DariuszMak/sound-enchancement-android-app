@@ -42,15 +42,16 @@ class AudioEffectService : Service() {
                 for (i in 0 until numberOfBands) {
                     val freq = eq.getCenterFreq(i.toShort()) / 1000.0 // Hz
 
+                    // Smooth logarithmic / musical scaling
                     val boost = when {
-                        freq <= 60 -> baseLevel.toDouble()                  // deep bass
-                        freq <= 120 -> baseLevel * 0.75
-                        freq <= 250 -> baseLevel * 0.5
-                        freq <= 500 -> baseLevel * 0.25                     // low-mids
-                        freq <= 2000 -> baseLevel * 0.25                     // mids (vocals)
-                        freq <= 4000 -> baseLevel * 0.45                    // presence
-                        freq <= 8000 -> baseLevel * 0.9                    // upper mids / percussion
-                        else -> baseLevel * 1.0                              // highs for clarity/air
+                        freq <= 60 -> baseLevel * 0.9           // sub-bass
+                        freq <= 120 -> baseLevel * 0.7
+                        freq <= 250 -> baseLevel * 0.6
+                        freq <= 500 -> baseLevel * 0.35         // low-mids
+                        freq <= 2000 -> baseLevel * 0.4         // mids / vocals
+                        freq <= 4000 -> baseLevel * 0.45        // presence
+                        freq <= 8000 -> baseLevel * 0.7         // upper mids / percussion
+                        else -> baseLevel * 0.8                 // highs / air
                     }
 
                     // Exponential scaling for smooth, musical sound
@@ -60,7 +61,7 @@ class AudioEffectService : Service() {
                 }
             }
 
-            Log.d("AudioBoostService", "Professional dynamic bass + enhanced clarity applied")
+            Log.d("AudioBoostService", "Professional dynamic bass + enhanced clarity applied (smoothed)")
         } catch (e: Exception) {
             Log.e("AudioBoostService", "Error applying professional dynamic bass + clarity", e)
         }
