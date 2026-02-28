@@ -2,9 +2,11 @@ package com.example.soundenchancement
 
 import android.media.audiofx.BassBoost
 
-class RealBassBoost : IBassBoost {
+import android.media.MediaPlayer
 
-    private val bass = BassBoost(0, 0)
+class RealBassBoost(mediaPlayer: MediaPlayer) : IBassBoost {
+
+    private val bass = BassBoost(0, mediaPlayer.audioSessionId)
 
     override var strength: Short
         get() = bass.roundedStrength
