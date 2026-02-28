@@ -8,6 +8,8 @@ import android.os.Build
 import android.os.IBinder
 import android.util.Log
 import androidx.core.app.NotificationCompat
+import kotlin.math.pow
+import kotlin.math.roundToInt
 
 class AudioEffectService : Service() {
 
@@ -23,39 +25,46 @@ class AudioEffectService : Service() {
     override fun onCreate() {
         super.onCreate()
         startForegroundService()
-        enableGlobalBassBoost()
-        Log.d("AudioBoostService", "Global Bass Boost Enabled")
+        enableProfessionalDynamicBass()
+        Log.d("AudioBoostService", "Dynamic Bass Enabled")
     }
 
-    /**
-     * Enable a bass boost by increasing the gain of low frequency bands.
-     * Uses the Equalizer API on session 0 (global output).
-     */
-    private fun enableGlobalBassBoost(level: Int = 1000) {
+    private fun enableProfessionalDynamicBass(baseLevel: Int = 700) {
         try {
-            // Session 0 = global audio output
+            equalizer?.release()
             equalizer = Equalizer(0, 0)
             equalizer?.enabled = true
 
-            val numberOfBands = equalizer!!.numberOfBands
-            for (i in 0 until numberOfBands) {
-                val freq = equalizer!!.getCenterFreq(i.toShort())
-                // Boost only low frequencies (< 250 Hz)
-                if (freq <= 250_000) {
-                    val maxLevel = equalizer!!.bandLevelRange[1]
-                    val minLevel = equalizer!!.bandLevelRange[0]
-                    val boost = (level / 1000.0 * (maxLevel - minLevel)).toInt() + minLevel
-                    equalizer!!.setBandLevel(i.toShort(), boost.toShort())
+            equalizer?.let { eq ->
+                val numberOfBands = eq.numberOfBands
+                val (minLevel, maxLevel) = eq.bandLevelRange
+
+                for (i in 0 until numberOfBands) {
+                    val freq = eq.getCenterFreq(i.toShort()) / 1000.0 // Hz
+
+                    // Dynamic-like bass curve (non-linear, professional style)
+                    val boost = when {
+                        freq <= 60 -> baseLevel.toDouble()                     // ultra-low bass
+                        freq <= 120 -> baseLevel * 0.75
+                        freq <= 250 -> baseLevel * 0.5
+                        freq <= 500 -> baseLevel * 0.25                         // low-mids
+                        freq <= 2000 -> baseLevel * 0.1                         // mids (clarity)
+                        freq <= 4000 -> baseLevel * 0.05                        // presence
+                        else -> 0.0
+                    }
+
+                    // Apply exponential/log scaling for smoother, natural effect
+                    val scaledBoost = ((boost / 1000.0).pow(1.2) * (maxLevel - minLevel)).roundToInt() + minLevel
+
+                    val bandLevelShort = scaledBoost.coerceIn(minLevel.toInt(), maxLevel.toInt()).toShort()
+                    eq.setBandLevel(i.toShort(), bandLevelShort)
                 }
             }
-            Log.d("AudioBoostService", "Equalizer bass bands boosted")
-        } catch (e: Exception) {
-            Log.e("AudioBoostService", "Equalizer not supported on this device/output", e)
-        }
-    }
 
-    fun setBassBoostLevel(level: Int) {
-        enableGlobalBassBoost(level.coerceIn(0, 1000))
+            Log.d("AudioBoostService", "Professional dynamic bass applied")
+        } catch (e: Exception) {
+            Log.e("AudioBoostService", "Error applying professional dynamic bass", e)
+        }
     }
 
     override fun onDestroy() {
