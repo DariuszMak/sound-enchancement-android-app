@@ -43,14 +43,14 @@ class AudioEffectService : Service() {
                     val freq = eq.getCenterFreq(i.toShort()) / 1000.0
 
                     val boost = when {
-                        freq <= 60 -> baseLevel * 0.9      
-                        freq <= 120 -> baseLevel * 0.7
-                        freq <= 250 -> baseLevel * 0.6
-                        freq <= 500 -> baseLevel * 0.35    
-                        freq <= 2000 -> baseLevel * 0.4    
-                        freq <= 4000 -> baseLevel * 0.45   
-                        freq <= 8000 -> baseLevel * 0.7     
-                        else -> baseLevel * 0.8            
+                        freq <= 60 -> baseLevel * 1.1
+                        freq <= 120 -> baseLevel * 0.9
+                        freq <= 250 -> baseLevel * 0.7
+                        freq <= 500 -> baseLevel * 0.4
+                        freq <= 2000 -> baseLevel * 0.4
+                        freq <= 4000 -> baseLevel * 0.45
+                        freq <= 8000 -> baseLevel * 0.7
+                        else -> baseLevel * 0.8
                     }
 
                     val scaledBoost = ((boost / 1000.0).pow(1.2) * (maxLevel - minLevel)).roundToInt() + minLevel
