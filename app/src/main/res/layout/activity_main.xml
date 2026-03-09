@@ -2,50 +2,296 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:gravity="center"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#0A0A0F"
+    android:padding="20dp">
 
+    <!-- Header -->
     <LinearLayout
         android:orientation="horizontal"
-        android:gravity="center"
+        android:gravity="center_vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="EQUALIZER"
+            android:textColor="#FFFFFF"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:letterSpacing="0.15"/>
+
+        <!-- Status pill -->
+        <LinearLayout
+            android:id="@+id/statusPill"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#1A1A2E"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp">
+
+            <TextView
+                android:id="@+id/statusDot"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="●"
+                android:textColor="#444455"
+                android:textSize="14sp"
+                android:layout_marginEnd="6dp"/>
+
+            <TextView
+                android:id="@+id/statusLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="OFF"
+                android:textColor="#888888"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:letterSpacing="0.1"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Preset label -->
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp">
+        android:text="PRESET · DYNAMIC BASS+"
+        android:textColor="#333344"
+        android:textSize="11sp"
+        android:letterSpacing="0.12"
+        android:layout_marginBottom="24dp"/>
 
-        <TextView
-            android:id="@+id/statusDot"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="●"
-            android:textSize="24sp"
-            android:layout_marginEnd="8dp" />
+    <!-- EQ Bands -->
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center_horizontal">
 
-        <TextView
-            android:id="@+id/statusLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Sound effect: OFF"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+        <!-- Band 1: 60Hz -->
+        <LinearLayout android:orientation="vertical" android:gravity="center_horizontal"
+            android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="+8" android:textColor="#00E5FF" android:textSize="10sp" android:layout_marginBottom="4dp"/>
+            <SeekBar
+                android:id="@+id/band60"
+                android:layout_width="24dp"
+                android:layout_height="160dp"
+                android:rotation="270"
+                android:progress="88"
+                android:max="100"
+                android:progressTint="#00E5FF"
+                android:thumbTint="#00E5FF"
+                android:progressBackgroundTint="#1A2A2A"/>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="60" android:textColor="#555566" android:textSize="10sp" android:layout_marginTop="8dp"/>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="Hz" android:textColor="#333344" android:textSize="9sp"/>
+        </LinearLayout>
+
+        <!-- Band 2: 120Hz -->
+        <LinearLayout android:orientation="vertical" android:gravity="center_horizontal"
+            android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="+6" android:textColor="#00E5FF" android:textSize="10sp" android:layout_marginBottom="4dp"/>
+            <SeekBar
+                android:id="@+id/band120"
+                android:layout_width="24dp"
+                android:layout_height="160dp"
+                android:rotation="270"
+                android:progress="72"
+                android:max="100"
+                android:progressTint="#00E5FF"
+                android:thumbTint="#00E5FF"
+                android:progressBackgroundTint="#1A2A2A"/>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="120" android:textColor="#555566" android:textSize="10sp" android:layout_marginTop="8dp"/>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="Hz" android:textColor="#333344" android:textSize="9sp"/>
+        </LinearLayout>
+
+        <!-- Band 3: 250Hz -->
+        <LinearLayout android:orientation="vertical" android:gravity="center_horizontal"
+            android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="+4" android:textColor="#00BFFF" android:textSize="10sp" android:layout_marginBottom="4dp"/>
+            <SeekBar
+                android:id="@+id/band250"
+                android:layout_width="24dp"
+                android:layout_height="160dp"
+                android:rotation="270"
+                android:progress="55"
+                android:max="100"
+                android:progressTint="#00BFFF"
+                android:thumbTint="#00BFFF"
+                android:progressBackgroundTint="#1A2A2A"/>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="250" android:textColor="#555566" android:textSize="10sp" android:layout_marginTop="8dp"/>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="Hz" android:textColor="#333344" android:textSize="9sp"/>
+        </LinearLayout>
+
+        <!-- Band 4: 500Hz -->
+        <LinearLayout android:orientation="vertical" android:gravity="center_horizontal"
+            android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="+2" android:textColor="#7B9FFF" android:textSize="10sp" android:layout_marginBottom="4dp"/>
+            <SeekBar
+                android:id="@+id/band500"
+                android:layout_width="24dp"
+                android:layout_height="160dp"
+                android:rotation="270"
+                android:progress="38"
+                android:max="100"
+                android:progressTint="#7B9FFF"
+                android:thumbTint="#7B9FFF"
+                android:progressBackgroundTint="#1A2A2A"/>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="500" android:textColor="#555566" android:textSize="10sp" android:layout_marginTop="8dp"/>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="Hz" android:textColor="#333344" android:textSize="9sp"/>
+        </LinearLayout>
+
+        <!-- Band 5: 2kHz -->
+        <LinearLayout android:orientation="vertical" android:gravity="center_horizontal"
+            android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="+2" android:textColor="#7B9FFF" android:textSize="10sp" android:layout_marginBottom="4dp"/>
+            <SeekBar
+                android:id="@+id/band2k"
+                android:layout_width="24dp"
+                android:layout_height="160dp"
+                android:rotation="270"
+                android:progress="38"
+                android:max="100"
+                android:progressTint="#7B9FFF"
+                android:thumbTint="#7B9FFF"
+                android:progressBackgroundTint="#1A2A2A"/>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="2k" android:textColor="#555566" android:textSize="10sp" android:layout_marginTop="8dp"/>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="Hz" android:textColor="#333344" android:textSize="9sp"/>
+        </LinearLayout>
+
+        <!-- Band 6: 4kHz -->
+        <LinearLayout android:orientation="vertical" android:gravity="center_horizontal"
+            android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="+3" android:textColor="#B57BFF" android:textSize="10sp" android:layout_marginBottom="4dp"/>
+            <SeekBar
+                android:id="@+id/band4k"
+                android:layout_width="24dp"
+                android:layout_height="160dp"
+                android:rotation="270"
+                android:progress="46"
+                android:max="100"
+                android:progressTint="#B57BFF"
+                android:thumbTint="#B57BFF"
+                android:progressBackgroundTint="#1A2A2A"/>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="4k" android:textColor="#555566" android:textSize="10sp" android:layout_marginTop="8dp"/>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="Hz" android:textColor="#333344" android:textSize="9sp"/>
+        </LinearLayout>
+
+        <!-- Band 7: 8kHz -->
+        <LinearLayout android:orientation="vertical" android:gravity="center_horizontal"
+            android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="+5" android:textColor="#FF7BCA" android:textSize="10sp" android:layout_marginBottom="4dp"/>
+            <SeekBar
+                android:id="@+id/band8k"
+                android:layout_width="24dp"
+                android:layout_height="160dp"
+                android:rotation="270"
+                android:progress="62"
+                android:max="100"
+                android:progressTint="#FF7BCA"
+                android:thumbTint="#FF7BCA"
+                android:progressBackgroundTint="#1A2A2A"/>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="8k" android:textColor="#555566" android:textSize="10sp" android:layout_marginTop="8dp"/>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="Hz" android:textColor="#333344" android:textSize="9sp"/>
+        </LinearLayout>
+
+        <!-- Band 8: 16kHz -->
+        <LinearLayout android:orientation="vertical" android:gravity="center_horizontal"
+            android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="+6" android:textColor="#FF4488" android:textSize="10sp" android:layout_marginBottom="4dp"/>
+            <SeekBar
+                android:id="@+id/band16k"
+                android:layout_width="24dp"
+                android:layout_height="160dp"
+                android:rotation="270"
+                android:progress="72"
+                android:max="100"
+                android:progressTint="#FF4488"
+                android:thumbTint="#FF4488"
+                android:progressBackgroundTint="#1A2A2A"/>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="16k" android:textColor="#555566" android:textSize="10sp" android:layout_marginTop="8dp"/>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="Hz" android:textColor="#333344" android:textSize="9sp"/>
+        </LinearLayout>
 
     </LinearLayout>
 
-    <Button
-        android:id="@+id/btnStart"
-        android:layout_width="wrap_content"
+    <!-- dB scale -->
+    <TextView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="ON"
-        android:layout_marginBottom="8dp"
-        android:backgroundTint="#4CAF50"
-        android:textColor="#FFFFFF"/>
+        android:gravity="center"
+        android:text="0 dB ─────────────────── +15 dB"
+        android:textColor="#2A2A3A"
+        android:textSize="10sp"
+        android:letterSpacing="0.04"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="4dp"/>
 
-    <Button
-        android:id="@+id/btnStop"
-        android:layout_width="wrap_content"
+    <!-- Power buttons -->
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="OFF"
-        android:backgroundTint="#F44336"
-        android:textColor="#FFFFFF"/>
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/btnStart"
+            android:layout_width="0dp"
+            android:layout_height="52dp"
+            android:layout_weight="1"
+            android:layout_marginEnd="8dp"
+            android:text="ENABLE"
+            android:textStyle="bold"
+            android:letterSpacing="0.1"
+            android:backgroundTint="#0D2A22"
+            android:textColor="#00E5FF"
+            android:stateListAnimator="@null"/>
+
+        <Button
+            android:id="@+id/btnStop"
+            android:layout_width="0dp"
+            android:layout_height="52dp"
+            android:layout_weight="1"
+            android:layout_marginStart="8dp"
+            android:text="DISABLE"
+            android:textStyle="bold"
+            android:letterSpacing="0.1"
+            android:backgroundTint="#2A0A14"
+            android:textColor="#FF4466"
+            android:stateListAnimator="@null"/>
+
+    </LinearLayout>
 
 </LinearLayout>
