@@ -20,6 +20,9 @@ class MainActivity : AppCompatActivity() {
         val statusDot = findViewById<TextView>(R.id.statusDot)
         val statusLabel = findViewById<TextView>(R.id.statusLabel)
 
+        startService(Intent(this, AudioEffectService::class.java))
+        isBassActive = true
+
         fun updateStatus() {
             if (isBassActive) {
                 statusDot.setTextColor(ContextCompat.getColor(this, android.R.color.holo_green_light))
