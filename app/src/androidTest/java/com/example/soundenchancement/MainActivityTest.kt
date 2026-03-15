@@ -1,12 +1,9 @@
 package com.example.soundenchancement
 
-import android.content.Context
+import android.widget.TextView
 import androidx.test.core.app.ActivityScenario
-import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers.*
+import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
 
@@ -15,22 +12,24 @@ class MainActivityTest {
 
     @Test
     fun onLaunch_statusShouldShowOn() {
-        ActivityScenario.launch(MainActivity::class.java).use {
-            // UI should immediately reflect ON state
-            onView(withId(R.id.statusLabel))
-                .check(matches(withText("Sound effect: ON")))
+        ActivityScenario.launch(MainActivity::class.java).use { scenario ->
+            scenario.onActivity { activity ->
+                val statusLabel = activity.findViewById<TextView>(R.id.statusLabel)
+                assertEquals("Sound effect: ON", statusLabel.text.toString())
+            }
         }
     }
 
     @Test
     fun onLaunch_stopButtonShouldTurnOffStatus() {
-        ActivityScenario.launch(MainActivity::class.java).use {
-            // Press OFF button
-            onView(withId(R.id.btnStop)).perform(androidx.test.espresso.action.ViewActions.click())
+        ActivityScenario.launch(MainActivity::class.java).use { scenario ->
+            scenario.onActivity { activity ->
+                // Simulate button click directly on the UI thread
+                activity.findViewById<android.widget.Button>(R.id.btnStop).performClick()
 
-            // Status should update to OFF
-            onView(withId(R.id.statusLabel))
-                .check(matches(withText("Sound effect: OFF")))
+                val statusLabel = activity.findViewById<TextView>(R.id.statusLabel)
+                assertEquals("Sound effect: OFF", statusLabel.text.toString())
+            }
         }
     }
 }
