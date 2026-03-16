@@ -1,0 +1,106 @@
+package com.example.soundenchancement
+
+import org.junit.Assert.*
+import org.junit.Test
+
+/**
+ * Unit tests for [calculateBandLevel].
+ * These run on the JVM — no Android device or emulator needed.
+ */
+class BandLevelCalculatorTest {
+
+    // Use a realistic equalizer range: -1500 to +1500 millibels
+    private val minLevel = -1500
+    private val maxLevel = 1500
+    private val baseLevel = 700
+
+    // ── Output always stays within hardware limits ─────────────────────────
+
+    @Test
+    fun result_neverExceedsMaxLevel() {
+        val testFrequencies = listOf(30.0, 60.0, 120.0, 250.0, 500.0, 1000.0, 2000.0, 4000.0, 8000.0, 16000.0)
+        for (freq in testFrequencies) {
+            val level = calculateBandLevel(freq, baseLevel, minLevel, maxLevel)
+            assertTrue("Band at ${freq}Hz exceeded maxLevel: $level", level <= maxLevel)
+        }
+    }
+
+    @Test
+    fun result_neverBelowMinLevel() {
+        val testFrequencies = listOf(30.0, 60.0, 120.0, 250.0, 500.0, 1000.0, 2000.0, 4000.0, 8000.0, 16000.0)
+        for (freq in testFrequencies) {
+            val level = calculateBandLevel(freq, baseLevel, minLevel, maxLevel)
+            assertTrue("Band at ${freq}Hz was below minLevel: $level", level >= minLevel)
+        }
+    }
+
+    // ── Bass emphasis: low frequencies boost more than mids ────────────────
+
+    @Test
+    fun subBass_strongerThan_midrange() {
+        val subBass  = calculateBandLevel(40.0,   baseLevel, minLevel, maxLevel)
+        val midrange = calculateBandLevel(1000.0, baseLevel, minLevel, maxLevel)
+        assertTrue(
+            "Sub-bass (40 Hz) should be louder than midrange (1 kHz): $subBass vs $midrange",
+            subBass > midrange
+        )
+    }
+
+    @Test
+    fun bass_strongerThan_midrange() {
+        val bass     = calculateBandLevel(80.0,   baseLevel, minLevel, maxLevel)
+        val midrange = calculateBandLevel(500.0,  baseLevel, minLevel, maxLevel)
+        assertTrue(
+            "Bass (80 Hz) should be louder than midrange (500 Hz): $bass vs $midrange",
+            bass > midrange
+        )
+    }
+
+    // ── Boundary / edge cases ──────────────────────────────────────────────
+
+    @Test
+    fun exactBoundary_60Hz_usesSubBassMultiplier() {
+        // 60 Hz hits the first branch (freq <= 60), multiplier = 1.1
+        val at60  = calculateBandLevel(60.0, baseLevel, minLevel, maxLevel)
+        val at61  = calculateBandLevel(61.0, baseLevel, minLevel, maxLevel)
+        assertTrue(
+            "60 Hz (sub-bass branch) should be >= 61 Hz (bass branch): $at60 vs $at61",
+            at60 >= at61
+        )
+    }
+
+    @Test
+    fun zeroBaseLevel_returnsMinLevel() {
+        // With baseLevel = 0, boost = 0 for every band → scaled result should be minLevel
+        val level = calculateBandLevel(1000.0, 0, minLevel, maxLevel)
+        assertEquals("Zero baseLevel should yield minLevel", minLevel.toShort(), level)
+    }
+
+    @Test
+    fun symmetricRange_minEqualsNegativeMax() {
+        // Sanity check: minLevel == -maxLevel (common on real devices)
+        val level = calculateBandLevel(60.0, baseLevel, -1500, 1500)
+        assertTrue(level in -1500..1500)
+    }
+
+    // ── High-frequency shelf is elevated compared to mids ─────────────────
+
+    @Test
+    fun highFreq_strongerThan_midrange() {
+        val highFreq = calculateBandLevel(16000.0, baseLevel, minLevel, maxLevel)
+        val midrange = calculateBandLevel(1000.0,  baseLevel, minLevel, maxLevel)
+        assertTrue(
+            "High freq (16 kHz) should be louder than midrange (1 kHz): $highFreq vs $midrange",
+            highFreq > midrange
+        )
+    }
+
+    // ── Determinism ────────────────────────────────────────────────────────
+
+    @Test
+    fun sameInputs_alwaysReturnSameOutput() {
+        val first  = calculateBandLevel(440.0, baseLevel, minLevel, maxLevel)
+        val second = calculateBandLevel(440.0, baseLevel, minLevel, maxLevel)
+        assertEquals("calculateBandLevel must be deterministic", first, second)
+    }
+}

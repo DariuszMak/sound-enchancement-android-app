@@ -8,8 +8,37 @@ import android.os.Build
 import android.os.IBinder
 import android.util.Log
 import androidx.core.app.NotificationCompat
-import kotlin.math.pow
-import kotlin.math.roundToInt
+
+/**
+ * Calculates the equalizer band level for a given frequency and base level.
+ *
+ * @param freqHz   Center frequency of the band in Hz (not milliHz).
+ * @param baseLevel Desired base boost strength in millibels (e.g. 700).
+ * @param minLevel  Minimum band level supported by the device equalizer (millibels).
+ * @param maxLevel  Maximum band level supported by the device equalizer (millibels).
+ * @return          Band level clamped to [minLevel, maxLevel].
+ */
+fun calculateBandLevel(
+    freqHz: Double,
+    baseLevel: Int,
+    minLevel: Int,
+    maxLevel: Int
+): Short {
+    val boost = when {
+        freqHz <= 60   -> baseLevel * 1.10
+        freqHz <= 120  -> baseLevel * 0.90
+        freqHz <= 250  -> baseLevel * 0.70
+        freqHz <= 500  -> baseLevel * 0.40
+        freqHz <= 2000 -> baseLevel * 0.40
+        freqHz <= 4000 -> baseLevel * 0.45
+        freqHz <= 8000 -> baseLevel * 0.70
+        else           -> baseLevel * 0.80
+    }
+
+    val range = maxLevel - minLevel
+    val scaled = (Math.pow(boost / 1000.0, 1.2) * range).toInt() + minLevel
+    return scaled.coerceIn(minLevel, maxLevel).toShort()
+}
 
 class AudioEffectService : Service() {
 
@@ -40,26 +69,13 @@ class AudioEffectService : Service() {
                 val (minLevel, maxLevel) = eq.bandLevelRange
 
                 for (i in 0 until numberOfBands) {
-                    val freq = eq.getCenterFreq(i.toShort()) / 1000.0
-
-                    val boost = when {
-                        freq <= 60 -> baseLevel * 1.1
-                        freq <= 120 -> baseLevel * 0.9
-                        freq <= 250 -> baseLevel * 0.7
-                        freq <= 500 -> baseLevel * 0.4
-                        freq <= 2000 -> baseLevel * 0.4
-                        freq <= 4000 -> baseLevel * 0.45
-                        freq <= 8000 -> baseLevel * 0.7
-                        else -> baseLevel * 0.8
-                    }
-
-                    val scaledBoost = ((boost / 1000.0).pow(1.2) * (maxLevel - minLevel)).roundToInt() + minLevel
-                    val bandLevelShort = scaledBoost.coerceIn(minLevel.toInt(), maxLevel.toInt()).toShort()
-                    eq.setBandLevel(i.toShort(), bandLevelShort)
+                    val freqHz = eq.getCenterFreq(i.toShort()) / 1000.0
+                    val level = calculateBandLevel(freqHz, baseLevel, minLevel.toInt(), maxLevel.toInt())
+                    eq.setBandLevel(i.toShort(), level)
                 }
             }
 
-            Log.d("AudioBoostService", "Professional dynamic bass + enhanced clarity applied (smoothed)")
+            Log.d("AudioBoostService", "Professional dynamic bass + enhanced clarity applied")
         } catch (e: Exception) {
             Log.e("AudioBoostService", "Error applying professional dynamic bass + clarity", e)
         }
