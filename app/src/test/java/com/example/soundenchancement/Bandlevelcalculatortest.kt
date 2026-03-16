@@ -14,8 +14,6 @@ class BandLevelCalculatorTest {
     private val maxLevel = 1500
     private val baseLevel = 700
 
-    // ── Output always stays within hardware limits ─────────────────────────
-
     @Test
     fun result_neverExceedsMaxLevel() {
         val testFrequencies = listOf(30.0, 60.0, 120.0, 250.0, 500.0, 1000.0, 2000.0, 4000.0, 8000.0, 16000.0)
@@ -33,8 +31,6 @@ class BandLevelCalculatorTest {
             assertTrue("Band at ${freq}Hz was below minLevel: $level", level >= minLevel)
         }
     }
-
-    // ── Bass emphasis: low frequencies boost more than mids ────────────────
 
     @Test
     fun subBass_strongerThan_midrange() {
@@ -55,8 +51,6 @@ class BandLevelCalculatorTest {
             bass > midrange
         )
     }
-
-    // ── Boundary / edge cases ──────────────────────────────────────────────
 
     @Test
     fun exactBoundary_60Hz_usesSubBassMultiplier() {
@@ -83,8 +77,6 @@ class BandLevelCalculatorTest {
         assertTrue(level in -1500..1500)
     }
 
-    // ── High-frequency shelf is elevated compared to mids ─────────────────
-
     @Test
     fun highFreq_strongerThan_midrange() {
         val highFreq = calculateBandLevel(16000.0, baseLevel, minLevel, maxLevel)
@@ -94,8 +86,6 @@ class BandLevelCalculatorTest {
             highFreq > midrange
         )
     }
-
-    // ── Determinism ────────────────────────────────────────────────────────
 
     @Test
     fun sameInputs_alwaysReturnSameOutput() {
