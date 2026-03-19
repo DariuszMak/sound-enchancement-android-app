@@ -324,8 +324,8 @@ class MainActivityTest {
                 )
                 val band0Label = activity.bandLabels[0]?.text.toString()
                 assertTrue(
-                    "Band 0 label should contain 1.10 after reset, got: $band0Label",
-                    band0Label.contains("1.10")
+                    "Band 0 label should contain 1.40 after reset, got: $band0Label",
+                    band0Label.contains("1.40")
                 )
             }
         }

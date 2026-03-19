@@ -14,8 +14,8 @@ import androidx.core.app.NotificationCompat
 
 
 data class EqConfig(
-    val baseLevel: Int = 0,
-    val multipliers: DoubleArray = doubleArrayOf(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
+    val baseLevel: Int = 700,
+    val multipliers: DoubleArray = doubleArrayOf(1.40, 1.40, 0.70, 0.50, 0.60, 0.90, 1.00, 1.10)
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
