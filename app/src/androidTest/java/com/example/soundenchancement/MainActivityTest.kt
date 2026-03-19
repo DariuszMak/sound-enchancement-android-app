@@ -103,14 +103,14 @@ class MainActivityTest {
             scenario.onActivity { activity ->
                 val config = activity.buildConfigFromSliders()
                 assertEquals(700, config.baseLevel)
-                assertEquals(1.10, config.multipliers[0], 0.01)
-                assertEquals(0.90, config.multipliers[1], 0.01)
+                assertEquals(1.40, config.multipliers[0], 0.01)
+                assertEquals(1.40, config.multipliers[1], 0.01)
                 assertEquals(0.70, config.multipliers[2], 0.01)
-                assertEquals(0.40, config.multipliers[3], 0.01)
-                assertEquals(0.40, config.multipliers[4], 0.01)
-                assertEquals(0.45, config.multipliers[5], 0.01)
-                assertEquals(0.70, config.multipliers[6], 0.01)
-                assertEquals(0.80, config.multipliers[7], 0.01)
+                assertEquals(0.50, config.multipliers[3], 0.01)
+                assertEquals(0.60, config.multipliers[4], 0.01)
+                assertEquals(0.90, config.multipliers[5], 0.01)
+                assertEquals(1.00, config.multipliers[6], 0.01)
+                assertEquals(1.10, config.multipliers[7], 0.01)
             }
         }
     }
@@ -389,14 +389,14 @@ class MainActivityTest {
 
                 val config = activity.buildConfigFromSliders()
                 assertEquals(EqPreferences.DEFAULT_BASE_LEVEL, config.baseLevel)
-                assertEquals(1.10, config.multipliers[0], 0.01)
-                assertEquals(0.90, config.multipliers[1], 0.01)
+                assertEquals(1.40, config.multipliers[0], 0.01)
+                assertEquals(1.40, config.multipliers[1], 0.01)
                 assertEquals(0.70, config.multipliers[2], 0.01)
-                assertEquals(0.40, config.multipliers[3], 0.01)
-                assertEquals(0.40, config.multipliers[4], 0.01)
-                assertEquals(0.45, config.multipliers[5], 0.01)
-                assertEquals(0.70, config.multipliers[6], 0.01)
-                assertEquals(0.80, config.multipliers[7], 0.01)
+                assertEquals(0.50, config.multipliers[3], 0.01)
+                assertEquals(0.60, config.multipliers[4], 0.01)
+                assertEquals(0.90, config.multipliers[5], 0.01)
+                assertEquals(1.00, config.multipliers[6], 0.01)
+                assertEquals(1.10, config.multipliers[7], 0.01)
             }
         }
     }
