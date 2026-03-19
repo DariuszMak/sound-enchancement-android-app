@@ -105,7 +105,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:max="1500"
-                android:progress="700"
+                android:progress="0"
                 android:layout_marginBottom="12dp"/>
 
             
@@ -127,7 +127,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:max="200"
-                android:progress="110"
+                android:progress="0"
                 android:layout_marginBottom="12dp"/>
 
             <TextView
@@ -140,7 +140,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:max="200"
-                android:progress="90"
+                android:progress="0"
                 android:layout_marginBottom="12dp"/>
 
             <TextView
@@ -153,7 +153,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:max="200"
-                android:progress="70"
+                android:progress="0"
                 android:layout_marginBottom="12dp"/>
 
             <TextView
@@ -166,7 +166,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:max="200"
-                android:progress="40"
+                android:progress="0"
                 android:layout_marginBottom="12dp"/>
 
             <TextView
@@ -179,7 +179,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:max="200"
-                android:progress="40"
+                android:progress="0"
                 android:layout_marginBottom="12dp"/>
 
             <TextView
@@ -192,7 +192,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:max="200"
-                android:progress="45"
+                android:progress="0"
                 android:layout_marginBottom="12dp"/>
 
             <TextView
@@ -205,7 +205,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:max="200"
-                android:progress="70"
+                android:progress="0"
                 android:layout_marginBottom="12dp"/>
 
             <TextView
@@ -218,7 +218,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:max="200"
-                android:progress="80"
+                android:progress="0"
                 android:layout_marginBottom="12dp"/>
 
         </LinearLayout>
