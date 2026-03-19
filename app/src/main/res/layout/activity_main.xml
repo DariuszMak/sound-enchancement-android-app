@@ -78,7 +78,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="EQ Settings"
-                    android:textSize="16sp"
+                    android:textSize="18sp"
                     android:textStyle="bold"/>
 
                 <Button
@@ -112,10 +112,10 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Band Multipliers"
-                android:textStyle="bold"
-                android:textSize="14sp"
-                android:layout_marginBottom="4dp"/>
+                android:text="Band Multipliers:"
+                android:textStyle="bold|italic"
+                android:textSize="16sp"
+                android:layout_marginBottom="10dp"/>
 
             <TextView
                 android:id="@+id/labelBand0"
