@@ -9,15 +9,7 @@ import android.os.IBinder
 import android.util.Log
 import androidx.core.app.NotificationCompat
 
-/**
- * Holds the user-configurable EQ parameters.
- * Default values match the original hard-coded constants.
- *
- * @param baseLevel   Overall boost strength in millibels (default 700).
- * @param multipliers Per-band multipliers indexed 0-7, corresponding to the
- *                    frequency buckets ≤60, ≤120, ≤250, ≤500, ≤2000,
- *                    ≤4000, ≤8000, and >8000 Hz respectively.
- */
+
 data class EqConfig(
     val baseLevel: Int = 700,
     val multipliers: DoubleArray = doubleArrayOf(1.10, 0.90, 0.70, 0.40, 0.40, 0.45, 0.70, 0.80)
@@ -30,17 +22,7 @@ data class EqConfig(
     override fun hashCode(): Int = 31 * baseLevel + multipliers.contentHashCode()
 }
 
-/**
- * Calculates the equalizer band level for a given frequency and base level.
- * Logic is unchanged from the original implementation.
- *
- * @param freqHz    Center frequency of the band in Hz (not milliHz).
- * @param baseLevel Desired base boost strength in millibels (e.g. 700).
- * @param minLevel  Minimum band level supported by the device equalizer (millibels).
- * @param maxLevel  Maximum band level supported by the device equalizer (millibels).
- * @param config    EQ configuration carrying the per-band multipliers.
- * @return          Band level clamped to [minLevel, maxLevel].
- */
+
 fun calculateBandLevel(
     freqHz: Double,
     baseLevel: Int,
@@ -72,7 +54,6 @@ class AudioEffectService : Service() {
     
     internal var equalizer: Equalizer? = null
 
-    /** Reflects whether the equalizer is currently processing audio. */
     var isEqEnabled: Boolean = false
         private set
 
@@ -91,27 +72,19 @@ class AudioEffectService : Service() {
 
     
 
-    /**
-     * Applies [config] to the equalizer and ensures it is enabled.
-     * Safe to call at any time; always rebuilds band levels from scratch.
-     */
+
     fun applyConfig(config: EqConfig) {
         enableProfessionalDynamicBass(config)
     }
 
-    /**
-     * Disables the equalizer effect without releasing it.
-     * Band levels are preserved so [enableEq] restores sound instantly.
-     */
+
     fun disableEq() {
         equalizer?.enabled = false
         isEqEnabled = false
         Log.d("AudioBoostService", "Equalizer disabled")
     }
 
-    /**
-     * Re-enables the equalizer effect with the previously applied band levels.
-     */
+
     fun enableEq() {
         equalizer?.enabled = true
         isEqEnabled = true

@@ -3,10 +3,7 @@ package com.example.soundenchancement
 import org.junit.Assert.*
 import org.junit.Test
 
-/**
- * Unit tests for [calculateBandLevel].
- * These run on the JVM — no Android device or emulator needed.
- */
+
 class BandLevelCalculatorTest {
 
     

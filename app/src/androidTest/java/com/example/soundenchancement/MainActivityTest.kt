@@ -202,11 +202,7 @@ class MainActivityTest {
         }
     }
 
-    /**
-     * Regression test for the label-not-updated bug.
-     * Listeners must be attached BEFORE restoreSliderState() so that
-     * setProgress() triggers onProgressChanged and labels reflect saved values.
-     */
+
     @Test
     fun sliderLabels_reflectRestoredValues_onRelaunch() {
         val prefs = EqPreferences(ApplicationProvider.getApplicationContext())

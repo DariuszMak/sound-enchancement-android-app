@@ -127,10 +127,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    /**
-     * Resets all sliders to factory defaults, persists them, and re-applies
-     * the EQ immediately if the effect is currently active.
-     */
+
     internal fun onResetClicked() {
         sliderBaseLevel.progress = EqPreferences.DEFAULT_BASE_LEVEL
         for (i in 0 until 8) {
@@ -229,12 +226,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    /**
-     * Restores slider progress from [EqPreferences].
-     * Must be called AFTER [setupSliderListeners] so that [SeekBar.setProgress]
-     * triggers [SeekBar.OnSeekBarChangeListener.onProgressChanged] and label
-     * texts are updated in the same pass.
-     */
+
     internal fun restoreSliderState() {
         sliderBaseLevel.progress = eqPrefs.loadBaseLevel()
         for (i in 0 until 8) {

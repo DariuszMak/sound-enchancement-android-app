@@ -3,15 +3,7 @@ package com.example.soundenchancement
 import android.content.Context
 import android.content.SharedPreferences
 
-/**
- * Thin wrapper around [SharedPreferences] for persisting EQ slider state.
- *
- * Keys
- * ────
- * "base_level"     → Int  (0–1500, default 700)
- * "band_N"         → Int  (0–200, progress units; N = 0..7)
- * "is_active"      → Boolean (whether the effect was ON when the app was closed)
- */
+
 class EqPreferences(context: Context) {
 
     private val prefs: SharedPreferences =
@@ -51,7 +43,6 @@ class EqPreferences(context: Context) {
 
         const val DEFAULT_BASE_LEVEL = 700
 
-        /** Default multipliers × 100 → SeekBar progress values. */
         val DEFAULT_BAND_PROGRESS = intArrayOf(110, 90, 70, 40, 40, 45, 70, 80)
     }
 }
