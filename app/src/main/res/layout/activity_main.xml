@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:padding="24dp">
 
-        <!-- ── Status row ── -->
+        
         <LinearLayout
             android:orientation="horizontal"
             android:gravity="center"
@@ -38,7 +38,7 @@
 
         </LinearLayout>
 
-        <!-- ── ON / OFF buttons ── -->
+        
         <Button
             android:id="@+id/btnStart"
             android:layout_width="wrap_content"
@@ -56,7 +56,7 @@
             android:backgroundTint="#F44336"
             android:textColor="#FFFFFF"/>
 
-        <!-- ══ EQ panel — greyed out when effect is OFF ══ -->
+        
         <LinearLayout
             android:id="@+id/eqPanel"
             android:orientation="vertical"
@@ -64,7 +64,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp">
 
-            <!-- EQ header + reset button on same row -->
+            
             <LinearLayout
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
@@ -92,7 +92,7 @@
 
             </LinearLayout>
 
-            <!-- Base level -->
+            
             <TextView
                 android:id="@+id/labelBaseLevel"
                 android:layout_width="match_parent"
@@ -107,7 +107,7 @@
                 android:progress="700"
                 android:layout_marginBottom="12dp"/>
 
-            <!-- Band multipliers -->
+            
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
