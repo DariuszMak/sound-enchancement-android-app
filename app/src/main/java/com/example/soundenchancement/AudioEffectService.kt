@@ -35,21 +35,21 @@ fun calculateBandLevel(
     config: EqConfig = EqConfig()
 ): Short {
     val m = config.multipliers
-    val boost = when {
-        freqHz <= 60 -> baseLevel * m[0]
-        freqHz <= 120 -> baseLevel * m[1]
-        freqHz <= 250 -> baseLevel * m[2]
-        freqHz <= 500 -> baseLevel * m[3]
-        freqHz <= 2000 -> baseLevel * m[4]
-        freqHz <= 4000 -> baseLevel * m[5]
-        freqHz <= 8000 -> baseLevel * m[6]
-        else -> baseLevel * m[7]
+    val multiplier = when {
+        freqHz <= 60   -> m[0]
+        freqHz <= 120  -> m[1]
+        freqHz <= 250  -> m[2]
+        freqHz <= 500  -> m[3]
+        freqHz <= 2000 -> m[4]
+        freqHz <= 4000 -> m[5]
+        freqHz <= 8000 -> m[6]
+        else           -> m[7]
     }
 
-    val range = maxLevel - minLevel
-    val scaled = (Math.pow(boost / 1000.0, 1.2) * range).toInt() + minLevel
-    return scaled.coerceIn(minLevel, maxLevel).toShort()
+    val level = (multiplier * maxLevel).toInt()
+    return level.coerceIn(minLevel, maxLevel).toShort()
 }
+
 
 class AudioEffectService : Service() {
 
