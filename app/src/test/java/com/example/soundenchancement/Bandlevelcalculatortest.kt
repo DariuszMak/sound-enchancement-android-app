@@ -93,4 +93,14 @@ class BandLevelCalculatorTest {
         val second = calculateBandLevel(440.0, baseLevel, minLevel, maxLevel)
         assertEquals("calculateBandLevel must be deterministic", first, second)
     }
+
+    @Test
+    fun bass_different_values_for_same_frequency() {
+        val midRangeLowerLevel = calculateBandLevel(500.0, baseLevel - 1, minLevel, maxLevel)
+        val midRangeHigherLevel = calculateBandLevel(500.0, baseLevel, minLevel, maxLevel)
+        assertTrue(
+            "Lower mid range shold be more silent higher midrange (500 Hz): $midRangeLowerLevel vs $midRangeHigherLevel",
+            midRangeLowerLevel < midRangeHigherLevel
+        )
+    }
 }
