@@ -180,11 +180,11 @@ class MainActivity : AppCompatActivity() {
 
         val sliderIds = intArrayOf(
             R.id.sliderBand0, R.id.sliderBand1, R.id.sliderBand2, R.id.sliderBand3,
-            R.id.sliderBand4, R.id.sliderBand5, R.id.sliderBand6, R.id.sliderBand7
+            R.id.sliderBand4
         )
         val labelIds = intArrayOf(
             R.id.labelBand0, R.id.labelBand1, R.id.labelBand2, R.id.labelBand3,
-            R.id.labelBand4, R.id.labelBand5, R.id.labelBand6, R.id.labelBand7
+            R.id.labelBand4
         )
         for (i in 0 until 5) {
             bandSliders[i] = findViewById(sliderIds[i])
