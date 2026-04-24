@@ -97,7 +97,6 @@ class MainActivityTest {
         }
     }
 
-
     @Test
     fun buildConfigFromSliders_returnsDefaultConfig_onFreshLaunch() {
         ActivityScenario.launch(MainActivity::class.java).use { scenario ->
@@ -105,13 +104,10 @@ class MainActivityTest {
                 val config = activity.buildConfigFromSliders()
                 assertEquals(700, config.baseLevel)
                 assertEquals(1.40, config.multipliers[0], 0.01)
-                assertEquals(1.40, config.multipliers[1], 0.01)
-                assertEquals(0.70, config.multipliers[2], 0.01)
-                assertEquals(0.50, config.multipliers[3], 0.01)
-                assertEquals(0.60, config.multipliers[4], 0.01)
-                assertEquals(0.90, config.multipliers[5], 0.01)
-                assertEquals(1.00, config.multipliers[6], 0.01)
-                assertEquals(1.10, config.multipliers[7], 0.01)
+                assertEquals(1.20, config.multipliers[1], 0.01)
+                assertEquals(0.60, config.multipliers[2], 0.01)
+                assertEquals(0.90, config.multipliers[3], 0.01)
+                assertEquals(1.10, config.multipliers[4], 0.01)
             }
         }
     }
@@ -273,18 +269,17 @@ class MainActivityTest {
         val prefs = EqPreferences(ApplicationProvider.getApplicationContext())
         prefs.saveBaseLevel(500)
         prefs.saveBandProgress(0, 120)
-        prefs.saveBandProgress(7, 95)
+        prefs.saveBandProgress(4, 95)
 
         ActivityScenario.launch(MainActivity::class.java).use { scenario ->
             scenario.onActivity { activity ->
                 val config = activity.buildConfigFromSliders()
                 assertEquals(500, config.baseLevel)
                 assertEquals(1.20, config.multipliers[0], 0.01)
-                assertEquals(0.95, config.multipliers[7], 0.01)
+                assertEquals(0.95, config.multipliers[4], 0.01)
             }
         }
     }
-
 
     @Test
     fun resetButton_restoresSlidersToDefaultProgress() {
@@ -382,7 +377,6 @@ class MainActivityTest {
     fun resetButton_buildConfigMatchesDefaults() {
         ActivityScenario.launch(MainActivity::class.java).use { scenario ->
             scenario.onActivity { activity ->
-
                 activity.sliderBaseLevel.progress = 1500
                 for (i in 0 until 5) activity.bandSliders[i]?.progress = 200
 
@@ -391,13 +385,10 @@ class MainActivityTest {
                 val config = activity.buildConfigFromSliders()
                 assertEquals(EqPreferences.DEFAULT_BASE_LEVEL, config.baseLevel)
                 assertEquals(1.40, config.multipliers[0], 0.01)
-                assertEquals(1.40, config.multipliers[1], 0.01)
-                assertEquals(0.70, config.multipliers[2], 0.01)
-                assertEquals(0.50, config.multipliers[3], 0.01)
-                assertEquals(0.60, config.multipliers[4], 0.01)
-                assertEquals(0.90, config.multipliers[5], 0.01)
-                assertEquals(1.00, config.multipliers[6], 0.01)
-                assertEquals(1.10, config.multipliers[7], 0.01)
+                assertEquals(1.20, config.multipliers[1], 0.01)
+                assertEquals(0.60, config.multipliers[2], 0.01)
+                assertEquals(0.90, config.multipliers[3], 0.01)
+                assertEquals(1.10, config.multipliers[4], 0.01)
             }
         }
     }
