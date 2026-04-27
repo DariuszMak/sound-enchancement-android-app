@@ -37,11 +37,11 @@ fun calculateBandLevel(
     val m = config.multipliers
 
     val boost = when {
-        freqHz <= 100 -> baseLevel * m[0]   // Sub-bass / Bass (~60 Hz)
-        freqHz <= 500 -> baseLevel * m[1]   // Low-mid (~230 Hz)
-        freqHz <= 2000 -> baseLevel * m[2]   // Mid (~910 Hz)
-        freqHz <= 8000 -> baseLevel * m[3]   // Presence (~3.6 kHz)
-        else -> baseLevel * m[4]   // Air (~14 kHz)
+        freqHz <= 100 -> baseLevel * m[0]
+        freqHz <= 500 -> baseLevel * m[1]
+        freqHz <= 2000 -> baseLevel * m[2]
+        freqHz <= 8000 -> baseLevel * m[3]
+        else -> baseLevel * m[4]
     }
 
     val range = maxLevel - minLevel
